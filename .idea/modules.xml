@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/blitzreview-backend.iml" filepath="$PROJECT_DIR$/.idea/blitzreview-backend.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/blitz-review.iml" filepath="$PROJECT_DIR$/.idea/blitz-review.iml" />
     </modules>
   </component>
 </project>
