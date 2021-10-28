@@ -1,24 +1,23 @@
-import os
 import requests
-import openpyxl
-import logging
 import config
+import logger_setup
+import logging
 from secret import API_KEY
 
 def steamid_converter(username):
     response = requests.get(config.STEAM_ID_URL.format(API_KEY, username))
-    print(response.json()['response'])
-
-
-def games_grabber():
-    logger = logging.getLogger('logger')
-    username = steamid_converter(input('Enter Steam username: '))
-
-
-    logger.debug('log: ')
+    username = response.json()['response']['steamid']
     return username
 
-
-if __name__ == '__main__':
-    games_grabber()
-    # 'lokan141'
+def owned_games_grabber(username):
+    logger_setup.init_logging()
+    logger = logging.getLogger('logger')
+    logger.info('Grabbing games: username {}'.format(username))
+    response = requests.get(config.OWNED_GAMES_URL.format(API_KEY, username))
+    if response.status_code != 200:
+        steamid = steamid_converter(username)
+        response = requests.get(config.OWNED_GAMES_URL.format(API_KEY, steamid))
+    owned_games_json = response.json()['response']['games']
+    appids_list = [game['appid'] for game in owned_games_json]
+    logger.info('Success: appids of the {}: {}'.format(username, appids_list))
+    return appids_list
