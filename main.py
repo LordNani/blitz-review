@@ -3,15 +3,17 @@ import gamescrapper
 import logger_setup
 import logging
 
+
+
 def main():
-    #get steam username from console
-    #get steam id from username (Resolve Vanity)
-    #get owned games using steam id
-    #open a data.xlsx
-    #if game in list =>
+    # get steam username from console
+    # get steam id from username (Resolve Vanity)
+    # get owned games using steam id
+    # open a data.xlsx
+    # if game in list =>
     #   add username to cell containg the owners
     #   stop
-    #else =>
+    # else =>
     #   get info from steamspy
     #   get info from steam api
     #   save header img
