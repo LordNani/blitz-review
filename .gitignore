@@ -228,6 +228,7 @@ venv.bak/
 #secrets
 secret.py
 img/
+application.log
 
 # Spyder project settings
 .spyderproject

@@ -3,12 +3,45 @@ import logging
 import config
 import secret
 import config as cfg
+import json
+
 
 def get_game_info(app_id):
     logger = logging.getLogger('logger')
 
-    first_res = requests.get(config.STEAM_INFO_URL.format(app_id))
     logger.info('Getting info for app_id: {}'.format(app_id))
+
+    response_first = requests.get(config.STEAM_INFO_URL.format(app_id))
+    main_info = response_first.json()[str(app_id)]
+
+    if not main_info['success']:
+        logger.error('Error getting MAIN info for app_id: {}'.format(app_id))
+    else:
+        logger.info('Successfully got MAIN info for app_id: {}'.format(app_id))
+
+    main_info = main_info['data']
+    main_info = dict((k, main_info[k]) for k in ['name', 'steam_appid', 'developers', 'price_overview', 'release_date']
+                                        if k in main_info)
+    main_info['app_link'] = config.STEAM_APP_LINK_URL.format(app_id)
+    main_info['price_overview'] = main_info['price_overview']['final_formatted']
+    main_info['release_date'] = main_info['release_date']['date'][-4:]
+
+    #getting extra info
+    response_second = requests.get(config.STEAMSPY_INFO_URL.format(app_id))
+    extra_info = response_second.json()
+    if extra_info['name'] is None:
+        logger.error('Error getting EXTRA info for app_id: {}'.format(app_id))
+    else:
+        logger.info('Successfully got EXTRA info for app_id: {}'.format(app_id))
+
+    extra_info = dict((k, extra_info[k]) for k in ['positive', 'negative', 'owners', 'tags']
+                                        if k in extra_info)
+
+    extra_info['tags'] = ' '.join(list(extra_info['tags'].keys())[:3])
+    extra_info['total_reviews'] = extra_info['positive'] + extra_info['negative']
+    extra_info['score'] = int(extra_info['positive'] / extra_info['total_reviews'] * 100)
+    result = main_info | extra_info
+    return result
 
 
 def save_header(app_id, app_name):

@@ -3,7 +3,7 @@ STEAM_ID_URL = "https://api.steampowered.com/ISteamUser/ResolveVanityURL/v1/?key
 OWNED_GAMES_URL = "https://api.steampowered.com/IPlayerService/GetOwnedGames/v1/?key={}&steamid={}&include_appinfo=true&include_played_free_games=true&include_free_sub=true"
 STEAMSPY_INFO_URL = "https://steamspy.com/api.php?request=appdetails&appid={}"
 STEAM_INFO_URL = "https://store.steampowered.com/api/appdetails/?appids={}"
-
+STEAM_APP_LINK_URL = "https://store.steampowered.com/app/{}"
 
 
 DATA_PATH = "data.xlsx"
