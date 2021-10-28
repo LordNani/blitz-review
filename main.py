@@ -1,13 +1,7 @@
 import requests
-from config import HEADER_URL, IMG_PATH
-
-def save_header(app_id, app_name):
-    response = requests.get(HEADER_URL.format(app_id))
-
-    file = open("{}{}.jpg".format(IMG_PATH, app_name), "wb")
-    file.write(response.content)
-    file.close()
-
+import gamescrapper
+import logger_setup
+import logging
 
 
 
@@ -26,7 +20,11 @@ def main():
     #   save all data in data.xlsx
     #   save owner
     #   stop
-    save_header(220, "half-life-2")
+    logger_setup.init_logging()
+    logger = logging.getLogger("logger")
+    logger.info("Started the BLITZREVIEW App")
+    gamescrapper.get_game_info(220)
+
 
 
 if __name__ == '__main__':
