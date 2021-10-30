@@ -10,7 +10,6 @@ def steamid_converter(username):
     return username
 
 def owned_games_grabber(username):
-    logger_setup.init_logging()
     logger = logging.getLogger('logger')
     logger.info('Grabbing games: username {}'.format(username))
     response = requests.get(config.OWNED_GAMES_URL.format(API_KEY, username))
@@ -19,5 +18,5 @@ def owned_games_grabber(username):
         response = requests.get(config.OWNED_GAMES_URL.format(API_KEY, steamid))
     owned_games_json = response.json()['response']['games']
     appids_list = [game['appid'] for game in owned_games_json]
-    logger.info('Success: appids of the {}: {}'.format(username, appids_list))
+    logger.debug('Success: appids of the {}: {}'.format(username, appids_list))
     return appids_list

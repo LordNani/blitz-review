@@ -1,5 +1,6 @@
 import requests
-import gamescrapper
+import game_scrapper as gs
+import user_scrapper as us
 import logger_setup
 import logging
 
@@ -23,8 +24,13 @@ def main():
     logger_setup.init_logging()
     logger = logging.getLogger("logger")
     logger.info("Started the BLITZREVIEW App")
-    gamescrapper.get_game_info(220)
 
+    for x in range(10000):
+        gs.get_game_info(823130)
+        print(x)
+    # app_ids = us.owned_games_grabber('thedelta28super')
+    # for id in app_ids:
+    #     logger.debug((gs.get_game_info(id)))
 
 
 if __name__ == '__main__':
