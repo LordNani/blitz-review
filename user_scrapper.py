@@ -4,6 +4,10 @@ import logger_setup
 import logging
 from secret import API_KEY
 
+def username_request():
+    username = input('Enter username from profile link or SteamID: ')
+    return username
+
 def steamid_converter(username):
     response = requests.get(config.STEAM_ID_URL.format(API_KEY, username))
     username = response.json()['response']['steamid']

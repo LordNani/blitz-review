@@ -1,15 +1,31 @@
 import requests
 import logging
 import config
+import time
 import secret
 import config as cfg
 import json
 
+REQUEST_COUNTER = 0
+
+def waiting():
+    start_time = time.time()
+    while True:
+        if (int(time.time()) - config.REQUEST_DELAY) > start_time:
+            return
+        else:
+            time.sleep(0.1)
 
 def get_game_info(app_id):
+    global REQUEST_COUNTER
     logger = logging.getLogger('logger')
 
     logger.info('Getting info for app_id: {}'.format(app_id))
+    if REQUEST_COUNTER >= config.REQUEST_LIMIT:
+        logger.info('Start waiting {} seconds'.format(config.REQUEST_DELAY))
+        waiting()
+        logger.info('Finished waiting {} seconds'.format(config.REQUEST_DELAY))
+        REQUEST_COUNTER = 0
 
     response_first = requests.get(config.STEAM_INFO_URL.format(app_id))
     main_info = response_first.json()[str(app_id)]
@@ -46,6 +62,9 @@ def get_game_info(app_id):
     if extra_info.get('total_reviews') != 0:
         extra_info['score'] = int(extra_info['positive'] / extra_info['total_reviews'] * 100)
     result = main_info | extra_info
+
+    REQUEST_COUNTER += 1
+
     return result
 
 

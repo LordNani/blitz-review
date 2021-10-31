@@ -1,6 +1,8 @@
+import openpyxl
 import requests
 import game_scrapper as gs
 import user_scrapper as us
+import excel_filling as ef
 import logger_setup
 import logging
 
@@ -24,13 +26,18 @@ def main():
     logger_setup.init_logging()
     logger = logging.getLogger("logger")
     logger.info("Started the BLITZREVIEW App")
-
-    for x in range(10000):
-        gs.get_game_info(823130)
-        print(x)
+    # workbook = openpyxl.load_workbook('./data.xlsx')
+    # x =  gs.get_game_info(823130)
+    # print(x)
     # app_ids = us.owned_games_grabber('thedelta28super')
     # for id in app_ids:
     #     logger.debug((gs.get_game_info(id)))
+
+    username = us.username_request()
+    appids_list = us.owned_games_grabber(username)
+    ef.data_filling(appids_list, username)
+
+
 
 
 if __name__ == '__main__':
