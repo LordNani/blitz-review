@@ -27,7 +27,7 @@ def main():
     logger = logging.getLogger("logger")
     logger.info("Started the BLITZREVIEW App")
     # workbook = openpyxl.load_workbook('./data.xlsx')
-    # x =  gs.get_game_info(823130)
+    # x =  gs.get_game_info(211)
     # print(x)
     # app_ids = us.owned_games_grabber('thedelta28super')
     # for id in app_ids:

@@ -2,9 +2,7 @@ import requests
 import logging
 import config
 import time
-import secret
-import config as cfg
-import json
+import regex as re
 
 REQUEST_COUNTER = 0
 
@@ -43,9 +41,12 @@ def get_game_info(app_id):
     if(main_info['is_free']):
         main_info['price_overview'] = '0$'
     elif main_info.get('price_overview') is not None:
-        main_info['price_overview'] = main_info['price_overview']['final_formatted']
+        main_info['price_overview'] = main_info['price_overview']['initial_formatted']
     main_info['release_date'] = main_info['release_date']['date'][-4:]
-
+    if main_info.get('developers') is None:
+        main_info['developers'] = 'EMPTY'
+    if type(main_info['developers'] is list):
+        main_info['developers'] = main_info['developers'][0]
     #getting extra info
     response_second = requests.get(config.STEAMSPY_INFO_URL.format(app_id))
     extra_info = response_second.json()
@@ -69,8 +70,9 @@ def get_game_info(app_id):
 
 
 def save_header(app_id, app_name):
+    name = re.sub(r'[^A-Za-z0-9\s]+', '', app_name)
     response = requests.get(config.HEADER_URL.format(app_id))
 
-    file = open("{}{}.jpg".format(config.IMG_PATH, app_name), "wb")
+    file = open("{}{}.jpg".format(config.IMG_PATH, name), "wb")
     file.write(response.content)
     file.close()
