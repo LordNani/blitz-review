@@ -21,12 +21,10 @@ def data_filling(appids, username):
         logger.info('{} / {}'.format(appids.index(appid), len(appids)))
         if appid in appids_existing:
             logger.info('Skipped appid {}'.format(appid))
-            username_cell = ws.cell(row=appids_existing.index(appid) + 1, column=config.EXCEL_MAPPER.get('username')) \
-                .value
-            if username_cell is None or username in username_cell:
+            username_cell = ws.cell(row=appids_existing.index(appid) + 1, column=config.EXCEL_MAPPER.get('username'))
+            if username_cell.value is None or username in username_cell.value:
                 continue
-            username_cell += username + ', '
-            continue
+            username_cell.value += '{}, '.format(username)
         game = gs.get_game_info(appid)
         if game is None:
             continue
@@ -36,6 +34,7 @@ def data_filling(appids, username):
             col_num = config.EXCEL_MAPPER.get(k)
             if col_num is None:
                 continue
+            # logger.info('Column - {}, value - {}'.format(k, v))
             ws.cell(row=current_row, column= col_num).value = v
         ws.cell(row=current_row, column= config.EXCEL_MAPPER.get('username')).value = username + ', '
 

@@ -14,9 +14,10 @@ EXCEL_MAPPER = {'steam_appid': 1,
                 'developers': 8,
                 'price_overview': 9,
                 'release_date': 10,
-                'username': 11}
+                'tags': 11,
+                'username': 12}
 
 REQUEST_DELAY = 60
-REQUEST_LIMIT = 100
+REQUEST_LIMIT = 70
 DATA_PATH = "data.xlsx"
 IMG_PATH = "img/"

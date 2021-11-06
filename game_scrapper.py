@@ -57,8 +57,11 @@ def get_game_info(app_id):
 
     extra_info = dict((k, extra_info[k]) for k in ['positive', 'negative', 'owners', 'tags']
                                         if k in extra_info)
-    if len(extra_info.get('tags')) > 0:
-        extra_info['tags'] = ' '.join(list(extra_info['tags'].keys())[:3])
+    if len(extra_info.get('tags')) == 0:
+        extra_info.pop('tags')
+    else:
+        extra_info['tags'] = ', '.join(list(extra_info['tags'].keys())[:3])
+        logger.info('Tags of {}: {}'.format(app_id, extra_info['tags']))
     extra_info['total_reviews'] = extra_info['positive'] + extra_info['negative']
     if extra_info.get('total_reviews') != 0:
         extra_info['score'] = int(extra_info['positive'] / extra_info['total_reviews'] * 100)
